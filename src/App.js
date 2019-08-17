@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './App.css';
-
 import YourComponent from "./YourComponent";
 
 class App extends Component {
@@ -37,7 +36,6 @@ class App extends Component {
           <li><b>Focus on the user, not the technology.</b> A simple implementation that impresses the user is better than a super technical solution that impresses other developers.</li>
           <li>That said, code that is easy to follow is always appreciated :)</li>
         </ul>
-
         <YourComponent />
       </div>
     );
