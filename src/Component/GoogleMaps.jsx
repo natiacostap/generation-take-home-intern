@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Map, GoogleApiWrapper, Marker} from 'google-maps-react';
+import { Map, GoogleApiWrapper, Marker, InfoWindow} from 'google-maps-react';
 import stores from '../store_directory.json'
-import swal from '@sweetalert/with-react'
-import Favs from './View'
-import Favorites from './favorites'
+import swal from 'sweetalert';
+
 
 
 const mapStyles = {
@@ -11,26 +10,8 @@ const mapStyles = {
   height: '90%'
 };
 
-
-const onPick = value => {
-  swal("Se agrego a tus favoritos!", `:)`, "success")
-}
-const FavButton = ({favorites, onClick }) => (
-  <button 
-    data={(favorites)}
-    onClick={() => onClick(favorites)}
-  >Agregar a Favoritos</button>
-);
-
-
-export class MapContainer extends Component {
-   constructor(props){
-     super(props)
-     this.state ={
-       favs: []
-     }
-   }
-    favs= []
+class MapContainer extends Component { 
+    
     displayMarkers = () => {
       return stores.map(el => {
         return <Marker  
@@ -38,41 +19,27 @@ export class MapContainer extends Component {
          lat: el.Coordinates.lat,
          lng: el.Coordinates.lng
        }}
-       onClick={() =>  
+       onClick={() => 
         swal({
             title: el.Name,
             text: el.Address,
-            buttons: { cancel: true,
-                       confirm: "Favorito"},
-                      //  .then((value) =>{
-                      //     console.log(value)
-                      //  })
-        })
-        
-        
-        // content: (
-        //   <div>
-        //     <FavButton 
-        //     favorites={{title: el.Name,text: el.Address,}}
-        //     onClick={onPick}
-        //     />
-        //   </div>
-        // )
-        
-       }
+            button: "Favorito",
+       })
+      
+      }
     />
+   
+    
       })
-    }
-
-       
+    }   
     render() {
       return (
         <div> 
           <div id='Nav'> 
-            <nav class="navbar navbar-light">
-              <a><h1>Mexico's Stores</h1></a>
+            <nav class="navbar navbar-light bg-dark">
+              <a><h1 style={{color: "white"}}>Mexico's Stores</h1></a>
               <div class="dropdown">
-              <a class="btn btn-secondary dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a style={{brackgroundColor: "green", color:"white"}}class=" dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Favoritos
               </a>
                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
@@ -86,8 +53,14 @@ export class MapContainer extends Component {
               zoom={12}
               style={mapStyles}
               initialCenter={{ lat: 19.432608, lng: -99.133209}}
+              onClick={this.onMapClicked}
+
             >
+              
+               
               {this.displayMarkers()}
+            
+       
              
             </Map>
             <div>
