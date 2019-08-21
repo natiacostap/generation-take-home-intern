@@ -1,16 +1,36 @@
 import React, { Component } from 'react';
-import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
+import { Map, GoogleApiWrapper, Marker} from 'google-maps-react';
 import stores from '../store_directory.json'
-import swal from 'sweetalert'
+import swal from '@sweetalert/with-react'
+import Favs from './View'
+import Favorites from './favorites'
+
 
 const mapStyles = {
-  width: '100%',
-  height: '100%'
+  width: '80%',
+  height: '90%'
 };
 
+
+const onPick = value => {
+  swal("Se agrego a tus favoritos!", `:)`, "success")
+}
+const FavButton = ({favorites, onClick }) => (
+  <button 
+    data={(favorites)}
+    onClick={() => onClick(favorites)}
+  >Agregar a Favoritos</button>
+);
+
+
 export class MapContainer extends Component {
-   
-  
+   constructor(props){
+     super(props)
+     this.state ={
+       favs: []
+     }
+   }
+    favs= []
     displayMarkers = () => {
       return stores.map(el => {
         return <Marker  
@@ -22,17 +42,45 @@ export class MapContainer extends Component {
         swal({
             title: el.Name,
             text: el.Address,
-            button: "Agregar a Favoritos",
-          })}
-      
+            buttons: { cancel: true,
+                       confirm: "Favorito"},
+                      //  .then((value) =>{
+                      //     console.log(value)
+                      //  })
+        })
+        
+        
+        // content: (
+        //   <div>
+        //     <FavButton 
+        //     favorites={{title: el.Name,text: el.Address,}}
+        //     onClick={onPick}
+        //     />
+        //   </div>
+        // )
+        
+       }
     />
       })
     }
 
-    
        
     render() {
-        return (
+      return (
+        <div> 
+          <div id='Nav'> 
+            <nav class="navbar navbar-light">
+              <a><h1>Mexico's Stores</h1></a>
+              <div class="dropdown">
+              <a class="btn btn-secondary dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Favoritos
+              </a>
+               <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+               <a class="dropdown-item" ></a>
+               </div>
+              </div>
+             </nav>
+        </div>
             <Map
               google={this.props.google}
               zoom={12}
@@ -41,13 +89,17 @@ export class MapContainer extends Component {
             >
               {this.displayMarkers()}
              
-             
             </Map>
+            <div>
+              
+            </div>
 
+            </div>
         );
       
     }
-    }
+}
+  
 export default GoogleApiWrapper({
   apiKey: 'AIzaSyCVH8e45o3d-5qmykzdhGKd1-3xYua5D2A'
 })(MapContainer);
